@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\UsersController;
 use App\Http\Controllers\admin\MedicalCheckController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome.index');
+Route::post('/welcome/check', [WelcomeController::class, 'check'])->name('welcome.check');
 
 Auth::routes();
 Route::middleware(['auth'])->group(
@@ -34,6 +35,8 @@ Route::middleware(['auth'])->group(
             Route::name('medical.')->prefix('medical')->group(function () {
                 Route::controller(MedicalCheckController::class)->group(function () {
                     Route::get('/', 'index')->name('index');
+                    Route::get('/datatable', 'datatable')->name('datatable');
+                    Route::get('/export-excel', 'exportExcel')->name('export-excel');
                     Route::get('/create', 'create')->name('create');
                     Route::post('/store', 'store')->name('store');
                     Route::get('/{id}/edit', 'edit')->name('edit');

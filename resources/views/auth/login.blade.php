@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SATSET</title>
+  <title>Institut Pemerintahan Dalam Negeri (IPDN) - Login</title>
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
   <!-- Logo -->
   <img src="{{ asset('assets/images/logo/logo.png') }}" class="my-4" style="width:180px;" alt="Logo DOKKES">
 
-  <h3 class="fw-bold">SATSET</h3>
+  <h3 class="fw-bold">Institut Pemerintahan Dalam Negeri (IPDN)</h3>
 
   <!-- Login Card -->
   <div class="card mx-auto mt-4" style="max-width:430px;">

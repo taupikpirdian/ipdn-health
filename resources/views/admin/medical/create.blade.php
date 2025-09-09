@@ -73,7 +73,7 @@
                     @endif
 
                     @if($is_edit)
-                        <form action="{{ route('dashboard.medical.update', $medical->id) }}" method="POST">
+                        <form action="{{ route('dashboard.medical.update', $data->id) }}" method="POST">
                         @method('PUT')
                     @else
                         <form action="{{ route('dashboard.medical.store') }}" method="POST">
@@ -82,132 +82,114 @@
                         <!-- IDENTITAS PASIEN -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Nomor Pemeriksaan <span class="text-danger">*</span></label>
-                                <input type="number" name="age" class="form-control" placeholder="Contoh: SKM/03440xxxxx" value="{{ old('nomor',$data->nomor ?? '') }}" required>
+                                <label class="form-label">Nomor Surat <span class="text-danger">*</span></label>
+                                <input type="text" name="nomor" class="form-control" placeholder="Contoh: R/SKM-001/IX/2025/Biddokkes" value="{{ old('nomor',$data->nomor ?? '') }}" required>
+                                @error('nomor')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Klasifikasi <span class="text-danger">*</span></label>
+                                <select class="form-select @error('klasifikasi') is-invalid @enderror" 
+                                        id="klasifikasi" name="klasifikasi" required>
+                                    <option value="">Pilih Klasifikasi</option>
+                                    <option value="rahasia" {{ old('klasifikasi',$data->klasifikasi ?? '') == 'rahasi' ? 'selected' : '' }}>Rahasia</option>
+                                    <option value="umum" {{ old('klasifikasi',$data->klasifikasi ?? '') == 'umum' ? 'selected' : '' }}>Umum</option>
+                                </select>
+                                @error('klasifikasi')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Perihal <span class="text-danger">*</span></label>
+                                <input type="text" name="hal" class="form-control" placeholder="Masukan Perihal" value="{{ old('hal',$data->hal ?? '') }}" required>
+                                @error('hal')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">No Peserta <span class="text-danger">*</span></label>
+                                <input type="text" name="no_peserta" class="form-control" placeholder="Masukan No Peserta" value="{{ old('no_peserta',$data->member->nomor ?? '') }}" required>
+                                @error('no_peserta')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Nama <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control" placeholder="Masukan Nama Pasien" value="{{ old('name',$data->name ?? '') }}" required>
+                                <input type="text" name="name" class="form-control" placeholder="Masukan Nama Peserta" value="{{ old('name',$data->member->name ?? '') }}" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
-                                <select class="form-select @error('role') is-invalid @enderror" 
+                                <select class="form-select @error('gender') is-invalid @enderror" 
                                         id="gender" name="gender" required>
-                                    <option value="">Pilih Role</option>
-                                    <option value="L">Pria</option>
-                                    <option value="P">Wanita</option>
+                                    <option value="">Pilih Jenis Kelamin</option>
+                                    <option value="L" {{ old('gender',$data->member->jk ?? '') == 'L' ? 'selected' : '' }}>Pria</option>
+                                    <option value="P" {{ old('gender',$data->member->jk ?? '') == 'P' ? 'selected' : '' }}>Wanita</option>
                                 </select>
+                                @error('gender')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
-                                <input type="date" name="age" class="form-control" placeholder="Contoh: 34" value="{{ old('date_of_birth',$data->date_of_birth ?? '') }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Agama <span class="text-danger">*</span></label>
-                                <input type="text" name="religion" class="form-control" placeholder="Contoh: Islam"  value="{{ old('religion',$data->religion ?? '') }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Pangkat <span class="text-danger">*</span></label>
-                                <input type="text" name="religion" class="form-control" placeholder="Contoh: AKP"  value="{{ old('religion',$data->religion ?? '') }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">NRP/NIP <span class="text-danger">*</span></label>
-                                <input type="text" name="religion" class="form-control" placeholder="Contoh: Islam"  value="{{ old('religion',$data->religion ?? '') }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Jabatan <span class="text-danger">*</span></label>
-                                <input type="text" name="religion" class="form-control" placeholder="Contoh: PAUR KESMAPTA"  value="{{ old('religion',$data->religion ?? '') }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Kesatuan <span class="text-danger">*</span></label>
-                                <input type="text" name="religion" class="form-control" placeholder="Contoh: BIDDOKKES"  value="{{ old('religion',$data->religion ?? '') }}" required>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Alamat <span class="text-danger">*</span></label>
-                                <input type="text" name="address" class="form-control" placeholder="Masukkan alamat" value="{{ old('address',$data->address ?? '') }}" required>
+                                <label class="form-label">Kota/Kabupaten <span class="text-danger">*</span></label>
+                                <select class="form-select @error('city') is-invalid @enderror select2" 
+                                        id="city" name="city" required>
+                                    <option value="">Pilih Kota/Kabupaten</option>
+                                    @foreach($cities as $city)
+                                        <option value="{{ $city->id }}" {{ old('city',$data->member->city_id ?? '') == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('city')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         
                         <!-- PEMERIKSAAN FISIK -->
-                        <h6 class="fw-bold mt-4">Pemeriksaan Fisik</h6>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Tinggi Badan (cm)</label>
-                            <input type="number" name="height" class="form-control" value="{{ old('height',$data->height ?? '') }}">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Berat Badan (kg)</label>
-                            <input type="number" name="weight" class="form-control" value="{{ old('weight',$data->weight ?? '') }}">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Komposisi Tubuh</label>
-                            <input type="text" name="composition" class="form-control" value="{{ old('composition',$data->composition ?? '') }}">
-                            </div>
-                        
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Lingkar Perut</label>
-                            <input type="text" name="lingkar_perut" class="form-control" value="{{ old('lingkar_perut',$data->lingkar_perut ?? '') }}">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Tensi</label>
-                            <input type="text" name="tension" class="form-control" placeholder="contoh: 120/80" value="{{ old('tension',$data->tension ?? '') }}">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">PLT</label>
-                            <input type="text" name="plt" class="form-control" value="{{ old('plt',$data->plt ?? '') }}">
-                            </div>
-                        
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Nadi</label>
-                            <input type="text" name="pulse" class="form-control" value="{{ old('pulse',$data->pulse ?? '') }}">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">VOD / VOS</label>
-                            <input type="text" name="vod_vos" class="form-control" placeholder="contoh: 6/9 , 6/9" value="{{ old('vod_vos',$data->vod_vos ?? '') }}">
-                            </div>
-                        </div>
-                        
-                        <!-- PEMERIKSAAN PENUNJANG -->
-                        <h6 class="fw-bold mt-4">Pemeriksaan Penunjang</h6>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Laboratorium</label>
-                            <input type="text" name="lab" class="form-control" value="{{ old('lab',$data->lab ?? 'Terlampir') }}">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Rontgen</label>
-                            <input type="text" name="rontgen" class="form-control" value="{{ old('rontgen',$data->rontgen ?? 'Terlampir') }}">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                            <label class="form-label">Treadmill</label>
-                            <input type="text" name="treadmill" class="form-control" value="{{ old('treadmill',$data->treadmill ?? 'Terlampir') }}">
-                            </div>
-                        </div>
-                        
-                        <!-- URAIAN KELAINAN -->
-                        <div class="mb-3">
-                            <label class="form-label">Uraian Kelainan</label>
-                            <textarea name="findings" rows="3" class="form-control">{{ old('findings',$data->findings ?? 'Visus VOD 6/9 VOS 6/9 (2)') }}</textarea>
-                        </div>
-                        
-                        <!-- NILAI -->
+                        <h6 class="fw-bold mt-4">Pemeriksaan</h6>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                            <label class="form-label">Nilai</label>
-                            <input type="text" name="score" class="form-control" value="{{ old('score',$data->score ?? '77 Baik (B)') }}">
+                                <label class="form-label">No Kesehatan Tahap I <span class="text-danger">*</span></label>
+                                <input type="text" name="no_kesehatan_tahap1" class="form-control" placeholder="Masukan No Kesehatan Tahap I" value="{{ old('no_kesehatan_tahap1',$data->member->no_kesehatan_tahap1 ?? '') }}" required>
+                                @error('no_kesehatan_tahap1')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                            <label class="form-label">Tanggal Pemeriksaan <span class="text-danger">*</span></label>
-                            <input type="date" name="exam_date" class="form-control" value="{{ old('exam_date',$data->exam_date ?? '') }}" required>
+                                <label class="form-label">No Kesehatan Tahap II </label>
+                                <input type="text" name="no_kesehatan_tahap2" class="form-control" placeholder="Masukan No Kesehatan Tahap II" value="{{ old('no_kesehatan_tahap2',$data->member->no_kesehatan_tahap2 ?? '') }}">
+                                @error('no_kesehatan_tahap2')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            {{-- Hal khusus yang ditemukan --}}
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Hal Khusus yang Ditemukan</label>
+                                <textarea name="hal_khusus" rows="3" class="form-control">{{ old('hal_khusus',$data->hal_khusus ?? '') }}</textarea>
+                                @error('hal_khusus')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <!-- Nilai status kesehatan -->
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Nilai Status Kesehatan <span class="text-danger">*</span></label>
+                                <textarea name="nilai" rows="3" class="form-control" required>{{ old('nilai',$data->nilai ?? '') }}</textarea>
+                                @error('nilai')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <!-- SARAN -->
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Saran</label>
+                                <textarea name="saran" rows="3" class="form-control">{{ old('saran',$data->saran ?? '') }}</textarea>
+                                @error('saran')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
-                        
-                        <!-- SARAN -->
-                        <div class="mb-3">
-                            <label class="form-label">Saran</label>
-                            <textarea name="recommendation" rows="3" class="form-control">{{ old('recommendation',$data->recommendation ?? '') }}</textarea>
-                        </div>
-  
 
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('dashboard.medical.index') }}" class="btn btn-secondary">
@@ -231,18 +213,20 @@
                     <div class="alert alert-info">
                         <h6><i class="fas fa-lightbulb"></i> Petunjuk Pengisian:</h6>
                         <ul class="mb-0 small">
-                            <li>Nama lengkap wajib diisi sesuai identitas peserta.</li>
-                            <li>Alamat diisi lengkap sesuai domisili saat ini.</li>
-                            <li>Bagian Pemeriksaan Fisik diisi sesuai hasil pemeriksaan (boleh dikosongkan jika belum dilakukan).</li>
-                            <li>Bagian Pemeriksaan Penunjang biarkan “Terlampir” jika ada hasil terpisah.</li>
-                            <li>Kolom Uraian Kelainan hanya diisi apabila ditemukan kelainan saat pemeriksaan.</li>
-                            <li>Nilai diisi sesuai ketetapan (contoh : 77 Baik (B)).</li>
-                            <li>Saran diisi dalam bentuk list (pisahkan dengan enter jika lebih dari satu).</li>
-                            <li>Tanggal Pemeriksaan wajib diisi sesuai tanggal pelaksanaan pemeriksaan.</li>
+                            <li><b>Nomor Surat</b> diisi dengan format resmi, contoh: <code>R/SKM-001/IX/2025/Biddokkes</code>.</li>
+                            <li><b>Klasifikasi</b> pilih sesuai kebutuhan (Rahasia atau Umum).</li>
+                            <li><b>Perihal</b> wajib diisi sesuai dengan tujuan surat.</li>
+                            <li><b>No Peserta</b> diisi dengan nomor peserta yang sah.</li>
+                            <li><b>Nama</b> wajib diisi sesuai identitas peserta.</li>
+                            <li><b>Jenis Kelamin</b> pilih sesuai identitas peserta (Pria/Wanita).</li>
+                            <li><b>Kota/Kabupaten</b> pilih domisili peserta.</li>
+                            <li><b>No Kesehatan Tahap I & II</b> wajib diisi sesuai hasil pemeriksaan.</li>
+                            <li><b>Hal Khusus yang Ditemukan</b> hanya diisi jika ada temuan khusus pada pemeriksaan.</li>
+                            <li><b>Nilai Status Kesehatan</b> wajib diisi dengan hasil penilaian (contoh: <code>77 Baik (B)</code>).</li>
+                            <li><b>Saran</b> boleh diisi dengan catatan atau rekomendasi tambahan (gunakan enter jika lebih dari satu poin).</li>
                         </ul>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>

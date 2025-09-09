@@ -17,13 +17,10 @@ class Member extends Model
         'district_id',
         'no_kesehatan_tahap1',
         'no_kesehatan_tahap2',
+        'medical_check_up_id',
     ];
     public function city()
     {
         return $this->belongsTo(City::class);
-    }
-    public function district()
-    {
-        return $this->belongsTo(District::class);
     }
 }

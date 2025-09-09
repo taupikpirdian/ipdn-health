@@ -32,11 +32,16 @@
     
     <div class="card">
         <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center w-100">
+            <div class="d-flex align-items-center w-100">
                 <h3 class="card-title m-0">Data Medical</h3>
-                <a href="{{ route('dashboard.medical.create') }}" class="btn btn-sm btn-primary">
-                    <i class="fas fa-plus"></i> Tambah Data
-                </a>
+                <div class="ms-auto d-flex gap-2">
+                    <a href="{{ route('dashboard.medical.create') }}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i> Tambah Data
+                    </a>
+                    <a href="{{ route('dashboard.medical.export-excel') }}" class="btn btn-sm btn-success">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </a>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -44,20 +49,17 @@
             <thead>
             <tr>
                 <th>No</th>
-                <th>Nomor</th>
-                <th>NRP</th>
+                <th>Nomor Surat</th>
+                <th>Nomor Peserta</th>
                 <th>Nama</th>
-                <th>Jabatan</th>
-                <th>Kesatuan</th>
+                <th>Kota</th>
                 <th>Nilai</th>
                 <th>Tanggal Dibuat</th>
                 <th>Aksi</th>
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td colspan="9" class="text-center">Tidak ada data</td>
-                </tr>
+               
             </tbody>
         </table>
         </div>  
@@ -67,18 +69,66 @@
 @endsection
 @section('scripts')
 <script>
-    $(document).ready(function () {
-    //   $('#example').DataTable();
+    var dataTable = $("#example").DataTable({
+        //   "scrollX": true,
+          processing: true,
+          serverSide: true,
+          autoWidth: true,
+          orderCellsTop: true,
+          fixedHeader: true,
+        //   sDom: 'lrtip',
+          fixedColumns: {
+              right: 1,
+              left: 0,
+          },
+          ajax: "{{ route('dashboard.medical.datatable') }}",
+          columns: [
+              {
+                  data: 'DT_RowIndex',
+                  orderable: false
+              },
+              {
+                  data: 'nomor',
+                  name: 'nomor'
+              },
+              {
+                  data: 'member_nomor',
+                  name: 'member_nomor'
+              },
+              {
+                  data: 'member_name',
+                  name: 'member_name'
+              },
+              {
+                  data: 'city_name',
+                  name: 'city_name'
+              },
+              {
+                  data: 'nilai',
+                  name: 'nilai'
+              },
+              {
+                  data: 'created_at',
+                  name: 'created_at'
+              },
+              {
+                  data: 'action',
+                  orderable: false
+              }
+          ],
+          order: [
+              [6, 'desc']
+          ]
     });
 
     function destroy(id) {
-        var url = "{{ route('dashboard.users.destroy', ':id') }}".replace(':id', id);
+        var url = "{{ route('dashboard.medical.destroy', ':id') }}".replace(':id', id);
         callDataWithAjax(url, 'POST', {
             _method: "DELETE"
         }).then((data) => {
             Swal.fire({
                 title: 'Success',
-                text: `Data user berhasil dihapus`,
+                text: `Data berhasil dihapus`,
                 icon: 'success',
                 confirmButtonText: 'OK'
             });

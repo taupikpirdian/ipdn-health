@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('nomor');
             $table->string('klasifikasi');
             $table->string('hal');
-            $table->string('hal_khusus');
-            $table->string('nilai');
-            $table->text('saran');
+            $table->string('hal_khusus')->nullable();
+            $table->string('nilai')->nullable();
+            $table->text('saran')->nullable();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

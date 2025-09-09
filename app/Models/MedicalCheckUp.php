@@ -14,5 +14,17 @@ class MedicalCheckUp extends Model
         'hal_khusus',
         'nilai',
         'saran',
+        'created_by',
+        'updated_by',
     ];
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'id', 'medical_check_up_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

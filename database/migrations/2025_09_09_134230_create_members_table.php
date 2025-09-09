@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('jk');
             $table->unsignedBigInteger('city_id');
-            $table->unsignedBigInteger('district_id');
+            $table->unsignedBigInteger('district_id')->nullable();
             $table->string('no_kesehatan_tahap1')->nullable();
             $table->string('no_kesehatan_tahap2')->nullable();
             $table->timestamps();

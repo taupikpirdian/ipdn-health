@@ -1,4 +1,22 @@
 @extends('layouts.admin')
+@section('styles')
+<style>
+  body {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .card {
+    border-radius: 1rem;
+  }
+  .stat-card {
+    color: #fff;
+  }
+  .bg1 { background: #36A2EB; }
+  .bg2 { background: #FF6384; }
+  .bg3 { background: #FF9F40; }
+  .bg4 { background: #4BC0C0; }
+</style>
+@endsection
 
 @section('content-header')
   <div class="container-fluid">
@@ -17,74 +35,81 @@
 @endsection
 
 @section('content')
-<div class="container-fluid">
-    <!--begin::Row-->
-    <div class="row">
-      <!--begin::Col-->
-      <div class="col-lg-6 col-6">
-        <!--begin::Small Box Widget 1-->
-        <div class="small-box text-bg-primary">
-          <div class="inner">
-            <h3>{{ $countPerkaras }}</h3>
-            <p>Jumlah Data Pasien</p>
-          </div>
-          <svg
-            class="small-box-icon"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              clip-rule="evenodd"
-              fill-rule="evenodd"
-              d="M2.25 13.5a8.25 8.25 0 018.25-8.25.75.75 0 01.75.75v6.75H18a.75.75 0 01.75.75 8.25 8.25 0 01-16.5 0z"
-            ></path>
-            <path
-              clip-rule="evenodd"
-              fill-rule="evenodd"
-              d="M12.75 3a.75.75 0 01.75-.75 8.25 8.25 0 018.25 8.25.75.75 0 01-.75.75h-7.5a.75.75 0 01-.75-.75V3z"
-            ></path>
-          </svg>
-          <a
-            href="#"
-            class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-          >
-            More info <i class="bi bi-link-45deg"></i>
-          </a>
+<div class="container-fluid py-4">
+  <!-- Row: Stat Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card shadow-sm stat-card bg1 text-center">
+        <div class="card-body">
+          <h6>Total Data Medical</h6>
+          <h3 id="totalData">{{ $totalData }}</h3>
         </div>
-        <!--end::Small Box Widget 1-->
-      </div>
-      <!--end::Col-->
-      <div class="col-lg-6 col-6">
-        <!--begin::Small Box Widget 2-->
-        <div class="small-box text-bg-success">
-          <div class="inner">
-            <h3>{{ $countUsers }}</h3>
-            <p>Jumlah Data Medical</p>
-          </div>
-          <svg
-            class="small-box-icon"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z"
-            ></path>
-          </svg>
-          <a
-            href="#"
-            class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-          >
-            More info <i class="bi bi-link-45deg"></i>
-          </a>
-        </div>
-        <!--end::Small Box Widget 2-->
       </div>
     </div>
-    <!--end::Row-->
+    <div class="col-md-3">
+      <div class="card shadow-sm stat-card bg2 text-center">
+        <div class="card-body">
+          <h6>Jumlah Peserta (Unique)</h6>
+          <h3 id="jumlahPeserta">{{ $totalMember }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm stat-card bg3 text-center">
+        <div class="card-body">
+          <h6>Jumlah Peserta Rahasia</h6>
+          <h3 id="pesertaRahasia">{{ $totalRahasia }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm stat-card bg4 text-center">
+        <div class="card-body">
+          <h6>Jumlah Peserta Umum</h6>
+          <h3 id="pesertaUmum">{{ $totalUmum }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row: Charts -->
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">Distribusi Jenis Kelamin</h6>
+          <div id="genderChart"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">Peserta per Kota</h6>
+          <div id="cityChart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-2">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">Klasifikasi Peserta</h6>
+          <div id="klasifikasiChart"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">Histogram Nilai Kesehatan</h6>
+          <div id="healthChart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection
 @section('scripts')
@@ -94,63 +119,48 @@
     integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
     crossorigin="anonymous"
 ></script>
-<!-- ChartJS -->
+
+<!-- ApexCharts Script -->
 <script>
-    // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
-    // IT'S ALL JUST JUNK FOR DEMO
-    // ++++++++++++++++++++++++++++++++++++++++++
+  // Dummy Data
+  const genderData = @json($jkData);
+  const kotaChart = @json($kotaChart);
+  const klsData = @json($klasifikasiData);
+  const cityLabels = kotaChart.labels;
+  const cityData = kotaChart.data;
+  const klasifikasiData = [klsData['Rahasia'], klsData['Umum']]; // Rahasia, Umum
+  const healthData = @json($healthData); // contoh histogram kategori
 
-    const sales_chart_options = {
-    series: [
-        {
-        name: 'Digital Goods',
-        data: [28, 48, 40, 19, 86, 27, 90],
-        },
-        {
-        name: 'Electronics',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        },
-    ],
-    chart: {
-        height: 300,
-        type: 'area',
-        toolbar: {
-        show: false,
-        },
-    },
-    legend: {
-        show: false,
-    },
-    colors: ['#0d6efd', '#20c997'],
-    dataLabels: {
-        enabled: false,
-    },
-    stroke: {
-        curve: 'smooth',
-    },
-    xaxis: {
-        type: 'datetime',
-        categories: [
-        '2023-01-01',
-        '2023-02-01',
-        '2023-03-01',
-        '2023-04-01',
-        '2023-05-01',
-        '2023-06-01',
-        '2023-07-01',
-        ],
-    },
-    tooltip: {
-        x: {
-        format: 'MMMM yyyy',
-        },
-    },
-    };
+  // Gender Chart
+  new ApexCharts(document.querySelector("#genderChart"), {
+    chart: { type: 'pie', height: 300 },
+    series: genderData,
+    labels: ["Pria", "Wanita"],
+    colors: ["#36A2EB", "#FF6384"]
+  }).render();
 
-    const sales_chart = new ApexCharts(
-    document.querySelector('#revenue-chart'),
-    sales_chart_options,
-    );
-    sales_chart.render();
+  // City Chart
+  new ApexCharts(document.querySelector("#cityChart"), {
+    chart: { type: 'bar', height: 300 },
+    series: [{ name: "Jumlah Peserta", data: cityData }],
+    xaxis: { categories: cityLabels },
+    colors: ["#4BC0C0"]
+  }).render();
+
+  // Klasifikasi Chart
+  new ApexCharts(document.querySelector("#klasifikasiChart"), {
+    chart: { type: 'donut', height: 300 },
+    series: klasifikasiData,
+    labels: ["Rahasia", "Umum"],
+    colors: ["#FF9F40", "#9966FF"]
+  }).render();
+
+  // Health Chart (Histogram)
+  new ApexCharts(document.querySelector("#healthChart"), {
+    chart: { type: 'bar', height: 300 },
+    series: [{ name: "Jumlah Peserta", data: healthData }],
+    xaxis: { categories: ["50-60", "61-70", "71-80", "81-90", "91-100", "101+"] },
+    colors: ["#FFCE56"]
+  }).render();
 </script>
 @endsection
